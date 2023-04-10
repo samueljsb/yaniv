@@ -9,7 +9,7 @@ function startGame () {
   const urlParams = new URLSearchParams()
   urlParams.set('players', joinedNames)
 
-  window.location.replace(`/?${urlParams.toString()}`)
+  window.location.replace(`/yaniv?${urlParams.toString()}`)
 }
 
 function main () {
