@@ -190,6 +190,7 @@ function main () {
 
   const submitButton = document.getElementById('submitScores')
   submitButton.addEventListener('click', submitScores)
+  submitButton.addEventListener('submit', submitScores)
 }
 
 main()
