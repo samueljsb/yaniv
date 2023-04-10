@@ -35,7 +35,6 @@ function buildPlayerInput (name) {
   inputElement.type = 'number'
   inputElement.className = 'form-control'
   inputElement.id = name
-  inputElement.required = true
 
   const innerDiv = document.createElement('div')
   innerDiv.className = 'col-sm-10'
