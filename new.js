@@ -15,6 +15,7 @@ function startGame () {
 function main () {
   const startGameButton = document.getElementById('startGame')
   startGameButton.addEventListener('click', startGame)
+  startGameButton.addEventListener('submit', startGame)
 }
 
 main()
