@@ -35,23 +35,18 @@ function buildPlayerInput (name) {
   inputElement.type = 'number'
   inputElement.inputMode = 'numeric'
   inputElement.className = 'form-control'
-  inputElement.id = name
-
-  const innerDiv = document.createElement('div')
-  innerDiv.className = 'col-sm-10'
-  innerDiv.appendChild(inputElement)
+  inputElement.name = name
 
   const label = document.createElement('label')
   label.htmlFor = name
-  label.className = 'col-sm-2 col-form-label'
   label.textContent = name
 
-  const outerDiv = document.createElement('div')
-  outerDiv.className = 'row mb-3'
-  outerDiv.appendChild(label)
-  outerDiv.appendChild(innerDiv)
+  const div = document.createElement('div')
+  div.className = 'form-floating mb-3'
+  div.appendChild(inputElement)
+  div.appendChild(label)
 
-  return outerDiv
+  return div
 }
 
 function initialiseForm (form, playerNames) {
