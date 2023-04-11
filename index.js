@@ -33,6 +33,7 @@ function getForm () { return document.getElementById('playerInputs') }
 function buildPlayerInput (name) {
   const inputElement = document.createElement('input')
   inputElement.type = 'number'
+  inputElement.inputMode = 'numeric'
   inputElement.className = 'form-control'
   inputElement.id = name
 
