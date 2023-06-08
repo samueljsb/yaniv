@@ -23,7 +23,8 @@
       <div class="card my-3">
         <div class="card-body">
           <div>
-            <a class="btn btn-outline-primary" href="/yaniv/new" role="button" style="float: right;">New game</a>
+            <a class="btn btn-outline-primary mx-1" href="/yaniv/new" role="button" style="float: right;">New game</a>
+            <input id="resetScores" type="reset" class="btn btn-outline-danger mx-1" value="Reset" style="float: right;">
           </div>
           <div id="scoreBoard"></div>
           <form onsubmit="return false;">
@@ -36,6 +37,9 @@
       <div class="card my-3">
         <div class="card-body">
           <h5 class="card-title">All rounds</h5>
+          <div>
+            <input id="undoLastRound" type="button" class="btn btn-outline-warning mx-1" value="Undo" style="float: right;">
+          </div>
           <div id="gameHistory"></div>
         </div>
       </div>

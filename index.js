@@ -177,6 +177,22 @@ function submitScores () {
   clearForm(form)
 }
 
+function resetScores () {
+  const playerNames = getPlayerNames()
+  const initialScores = new Array(playerNames.length).fill(0)
+  saveScores([initialScores])
+
+  renderTables()
+}
+
+function undoLastRound () {
+  const allScores = getAllScores()
+  allScores.pop()
+  saveScores(allScores)
+
+  renderTables()
+}
+
 function renderTables () {
   const playerNames = getPlayerNames()
   const allScores = getAllScores()
@@ -201,6 +217,12 @@ function main () {
   const submitButton = document.getElementById('submitScores')
   submitButton.addEventListener('click', submitScores)
   submitButton.addEventListener('submit', submitScores)
+
+  const resetButton = document.getElementById('resetScores')
+  resetButton.addEventListener('click', resetScores)
+
+  const undoButton = document.getElementById('undoLastRound')
+  undoButton.addEventListener('click', undoLastRound)
 }
 
 main()
