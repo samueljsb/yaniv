@@ -2,14 +2,15 @@ function readPlayerNames () {
   return document.getElementById('playerNames').value.trim().split('\n')
 }
 
+function setPlayerNames (names) {
+  window.sessionStorage.setItem('playerNames', JSON.stringify(names))
+}
+
 function startGame () {
   const names = readPlayerNames()
-  const joinedNames = names.join(',')
+  setPlayerNames(names)
 
-  const urlParams = new URLSearchParams()
-  urlParams.set('players', joinedNames)
-
-  window.location.replace(`/yaniv?${urlParams.toString()}`)
+  window.location.replace('/yaniv')
 }
 
 function main () {

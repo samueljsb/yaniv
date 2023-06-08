@@ -1,14 +1,8 @@
 // Config
 
 function getPlayerNames () {
-  const urlParams = new URLSearchParams(window.location.search)
-  const players = urlParams.get('players')
-
-  if (players) {
-    return players.split(',')
-  } else {
-    return ['Player 1', 'Player 2']
-  }
+  const names = JSON.parse(window.sessionStorage.getItem('playerNames'))
+  return names || ['Player 1', 'Player 2']
 }
 
 // Score board
