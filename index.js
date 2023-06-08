@@ -5,19 +5,56 @@ function getPlayerNames () {
   return names || ['Player 1', 'Player 2']
 }
 
+function saveScores (scores) {
+  window.sessionStorage.setItem('scores', JSON.stringify(scores))
+}
+
+function getAllScores () {
+  const scores = JSON.parse(window.sessionStorage.getItem('scores'))
+  return scores
+}
+
+function currentScores () {
+  const allScores = getAllScores()
+  return allScores[allScores.length - 1]
+}
+
+function recordRound (newScores) {
+  const scores = getAllScores()
+  scores.push(newScores)
+  saveScores(scores)
+}
+
 // Score board
 
-function getScoreBoard () { return document.getElementById('scoreBoard') }
+function renderScoreBoard (playerNames, allScores) {
+  const table = document.createElement('table')
+  table.setAttribute('class', 'table')
+  table.setAttribute('id', 'scoreBoard')
 
-function updateScoreBoard (table, scores) {
-  const tbody = table.getElementsByTagName('tbody')[0]
-  const row = tbody.getElementsByTagName('tr')[0]
-  const cells = row.getElementsByTagName('td')
-
-  for (let i = 0; i < scores.length; i++) {
-    const cell = cells[i]
-    cell.textContent = scores[i]
+  const thead = document.createElement('thead')
+  const headerRow = document.createElement('tr')
+  for (const name of playerNames) {
+    const th = document.createElement('th')
+    th.attributes.scope = 'col'
+    th.textContent = name
+    headerRow.appendChild(th)
   }
+  thead.appendChild(headerRow)
+  table.appendChild(thead)
+
+  const currentScores = allScores[allScores.length - 1]
+  const tbody = document.createElement('tbody')
+  const tr = document.createElement('tr')
+  for (const score of currentScores) {
+    const td = document.createElement('td')
+    td.textContent = score
+    tr.appendChild(td)
+  }
+  tbody.appendChild(tr)
+  table.appendChild(tbody)
+
+  return table
 }
 
 // Score input
@@ -43,7 +80,10 @@ function buildPlayerInput (name) {
   return div
 }
 
-function initialiseForm (form, playerNames) {
+function initialiseForm () {
+  const form = getForm()
+
+  const playerNames = getPlayerNames()
   for (const name of playerNames) {
     const el = buildPlayerInput(name)
     form.appendChild(el)
@@ -76,64 +116,41 @@ function clearForm (form) {
 
 // Score table
 
-function getTable () { return document.getElementById('scoreTable') }
+function renderGameHistory (playerNames, allScores) {
+  const table = document.createElement('table')
+  table.setAttribute('class', 'table')
+  table.setAttribute('id', 'scoreTable')
 
-function initialiseTable (table, playerNames) {
-  const thead = table.getElementsByTagName('thead')[0]
-  const row = thead.getElementsByTagName('tr')[0]
-
+  const thead = document.createElement('thead')
+  const headerRow = document.createElement('tr')
   for (const name of playerNames) {
-    const header = document.createElement('th')
-    header.attributes.scope = 'col'
-    header.textContent = name
-    row.appendChild(header)
+    const th = document.createElement('th')
+    th.attributes.scope = 'col'
+    th.textContent = name
+    headerRow.appendChild(th)
   }
+  thead.appendChild(headerRow)
+  table.appendChild(thead)
 
-  const tbody = table.getElementsByTagName('tbody')[0]
-  const startRow = document.createElement('tr')
-  tbody.appendChild(startRow)
-
-  for (let i = 0; i < playerNames.length; i++) {
-    const startingScore = document.createElement('td')
-    startingScore.textContent = '0'
-    startRow.appendChild(startingScore)
+  const tbody = document.createElement('tbody')
+  for (const scores of allScores) {
+    const tr = document.createElement('tr')
+    for (const score of scores) {
+      const td = document.createElement('td')
+      td.textContent = score
+      tr.appendChild(td)
+    }
+    tbody.appendChild(tr)
   }
-}
+  table.appendChild(tbody)
 
-function getTotalsFromTable (table) {
-  const tbody = table.getElementsByTagName('tbody')[0]
-  const rows = tbody.getElementsByTagName('tr')
-  const row = rows[rows.length - 1]
-
-  const cells = row.getElementsByTagName('td')
-
-  const scores = []
-  for (const cell of cells) {
-    scores.push(parseInt(cell.textContent))
-  }
-
-  return scores
-}
-
-function addScoresToTable (table, scores) {
-  const tbody = table.getElementsByTagName('tbody')[0]
-  const row = document.createElement('tr')
-  tbody.appendChild(row)
-
-  for (const score of scores) {
-    const td = document.createElement('td')
-    td.textContent = score.toString()
-    row.appendChild(td)
-  }
+  return table
 }
 
 // Game
 
 function calculateScore (scores, totals) {
   const newTotals = []
-
-  console.log(scores)
-  console.log(totals)
 
   for (let i = 0; i < scores.length; i++) {
     let newTotal = totals[i] + scores[i]
@@ -145,7 +162,6 @@ function calculateScore (scores, totals) {
     newTotals.push(newTotal)
   }
 
-  console.log(newTotals)
   return newTotals
 }
 
@@ -153,29 +169,34 @@ function submitScores () {
   const form = getForm()
   const scores = getScoresFromForm(form)
 
-  const table = getTable()
-  const totals = getTotalsFromTable(table)
-
+  const totals = currentScores()
   const newTotals = calculateScore(scores, totals)
-  addScoresToTable(table, newTotals)
+  recordRound(newTotals)
 
-  const scoreBoard = getScoreBoard()
-  updateScoreBoard(scoreBoard, newTotals)
-
+  renderTables()
   clearForm(form)
 }
 
-function main () {
+function renderTables () {
   const playerNames = getPlayerNames()
+  const allScores = getAllScores()
 
-  const scoreBoard = getScoreBoard()
-  initialiseTable(scoreBoard, playerNames)
+  const scoreBoardContainer = document.getElementById('scoreBoard')
+  const newScoreBoard = renderScoreBoard(playerNames, allScores)
+  scoreBoardContainer.replaceChildren(newScoreBoard)
 
-  const form = getForm()
-  initialiseForm(form, playerNames)
+  const gameHistoryContainer = document.getElementById('gameHistory')
+  const newGameHistory = renderGameHistory(playerNames, allScores)
+  gameHistoryContainer.replaceChildren(newGameHistory)
+}
 
-  const table = getTable()
-  initialiseTable(table, playerNames)
+function main () {
+  if (!getAllScores()) {
+    window.location.replace('/yaniv/new')
+  }
+
+  renderTables()
+  initialiseForm()
 
   const submitButton = document.getElementById('submitScores')
   submitButton.addEventListener('click', submitScores)
