@@ -1,9 +1,9 @@
-function playerNames () {
+function readPlayerNames () {
   return document.getElementById('playerNames').value.trim().split('\n')
 }
 
 function startGame () {
-  const names = playerNames()
+  const names = readPlayerNames()
   const joinedNames = names.join(',')
 
   const urlParams = new URLSearchParams()
