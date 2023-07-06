@@ -83,6 +83,8 @@ function buildPlayerInput (name) {
 function initialiseForm () {
   const form = getForm()
 
+  form.innerHTML = ''
+
   const playerNames = getPlayerNames()
   for (const name of playerNames) {
     const el = buildPlayerInput(name)
