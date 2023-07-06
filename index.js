@@ -5,6 +5,10 @@ function getPlayerNames () {
   return names || ['Player 1', 'Player 2']
 }
 
+function setPlayerNames (names) {
+  window.sessionStorage.setItem('playerNames', JSON.stringify(names))
+}
+
 function saveScores (scores) {
   window.sessionStorage.setItem('scores', JSON.stringify(scores))
 }
@@ -23,6 +27,20 @@ function recordRound (newScores) {
   const scores = getAllScores()
   scores.push(newScores)
   saveScores(scores)
+}
+
+// New game
+
+function showNewGameDialog () {
+  document.getElementById('newGameDialog').showModal()
+}
+
+function startNewGame () {
+  const playerNames = document.getElementById('playerNames').value.trim().split('\n')
+  setPlayerNames(playerNames)
+
+  initialiseForm()
+  resetScores()
 }
 
 // Score board
@@ -215,6 +233,9 @@ function main () {
 
   renderTables()
   initialiseForm()
+
+  const startGameButton = document.getElementById('startNewGameButton')
+  startGameButton.addEventListener('click', startNewGame)
 
   const submitButton = document.getElementById('submitScores')
   submitButton.addEventListener('click', submitScores)
