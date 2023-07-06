@@ -228,11 +228,15 @@ function renderTables () {
 
 function main () {
   if (!getAllScores()) {
-    window.location.replace('/yaniv/new')
+    resetScores()
+    showNewGameDialog()
   }
 
   renderTables()
   initialiseForm()
+
+  const newGameButton = document.getElementById('newGameButton')
+  newGameButton.addEventListener('click', showNewGameDialog)
 
   const startGameButton = document.getElementById('startNewGameButton')
   startGameButton.addEventListener('click', startNewGame)
