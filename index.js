@@ -46,33 +46,28 @@ function startNewGame () {
 // Score board
 
 function renderScoreBoard (playerNames, allScores) {
-  const table = document.createElement('table')
-  table.setAttribute('class', 'table')
-  table.setAttribute('id', 'scoreBoard')
+  const scoreBoardTemplate = document.querySelector('#scoreBoardTemplate')
 
-  const thead = document.createElement('thead')
-  const headerRow = document.createElement('tr')
+  const scoreBoard = scoreBoardTemplate.content.firstElementChild.cloneNode(true)
+
+  const headerRow = scoreBoard.querySelector('thead>tr')
   for (const name of playerNames) {
     const th = document.createElement('th')
     th.attributes.scope = 'col'
     th.textContent = name
     headerRow.appendChild(th)
   }
-  thead.appendChild(headerRow)
-  table.appendChild(thead)
 
   const currentScores = allScores[allScores.length - 1]
-  const tbody = document.createElement('tbody')
   const tr = document.createElement('tr')
   for (const score of currentScores) {
     const td = document.createElement('td')
     td.textContent = score
     tr.appendChild(td)
   }
-  tbody.appendChild(tr)
-  table.appendChild(tbody)
+  scoreBoard.querySelector('tbody').appendChild(tr)
 
-  return table
+  return scoreBoard
 }
 
 // Score input
