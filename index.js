@@ -80,22 +80,14 @@ function renderScoreBoard (playerNames, allScores) {
 function getForm () { return document.getElementById('playerInputs') }
 
 function buildPlayerInput (name) {
-  const inputElement = document.createElement('input')
-  inputElement.type = 'number'
-  inputElement.inputMode = 'numeric'
-  inputElement.className = 'form-control'
-  inputElement.name = name
+  const playerInputTemplate = document.querySelector('#playerInputTemplate')
 
-  const label = document.createElement('label')
-  label.htmlFor = name
-  label.textContent = name
+  const playerInput = playerInputTemplate.content.firstElementChild.cloneNode(true)
+  playerInput.querySelector('input').name = name
+  playerInput.querySelector('label').htmlFor = name
+  playerInput.querySelector('label').textContent = name
 
-  const div = document.createElement('div')
-  div.className = 'form-floating mb-3'
-  div.appendChild(inputElement)
-  div.appendChild(label)
-
-  return div
+  return playerInput
 }
 
 function initialiseForm () {
