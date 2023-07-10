@@ -9,6 +9,15 @@ function setPlayerNames (names) {
   window.sessionStorage.setItem('playerNames', JSON.stringify(names))
 }
 
+function getDisabledPlayers () {
+  const names = JSON.parse(window.sessionStorage.getItem('disabledPlayers'))
+  return names || []
+}
+
+function setDisabledPlayers (names) {
+  window.sessionStorage.setItem('disabledPlayers', JSON.stringify(names))
+}
+
 function saveScores (scores) {
   window.sessionStorage.setItem('scores', JSON.stringify(scores))
 }
@@ -74,13 +83,48 @@ function renderScoreBoard (playerNames, allScores) {
 
 function getForm () { return document.getElementById('playerInputs') }
 
+function disablePlayer (name) {
+  const disabledPlayers = new Set(getDisabledPlayers())
+  disabledPlayers.add(name)
+  setDisabledPlayers([...disabledPlayers])
+
+  const input = document.querySelector(`#input--${name}`)
+  input.value = '0'
+  input.disabled = true
+}
+
+function enablePlayer (name) {
+  const disabledPlayers = new Set(getDisabledPlayers())
+  disabledPlayers.delete(name)
+  setDisabledPlayers([...disabledPlayers])
+
+  const input = document.querySelector(`#input--${name}`)
+  input.value = ''
+  input.disabled = false
+}
+
+function toggleDisabled (name) {
+  getDisabledPlayers().includes(name) ? enablePlayer(name) : disablePlayer(name)
+}
+
 function buildPlayerInput (name) {
   const playerInputTemplate = document.querySelector('#playerInputTemplate')
 
   const playerInput = playerInputTemplate.content.firstElementChild.cloneNode(true)
-  playerInput.querySelector('input').name = name
-  playerInput.querySelector('label').htmlFor = name
-  playerInput.querySelector('label').textContent = name
+
+  const input = playerInput.querySelector('input')
+  input.name = name
+  input.id = `input--${name}`
+  if (getDisabledPlayers().includes(name)) {
+    input.value = '0'
+    input.disabled = true
+  }
+  const label = playerInput.querySelector('label')
+  label.htmlFor = name
+  label.textContent = name
+
+  const disableButton = playerInput.querySelector('button')
+  disableButton.addEventListener('click', () => toggleDisabled(name))
 
   return playerInput
 }
@@ -117,7 +161,11 @@ function clearForm (form) {
   const inputs = form.getElementsByTagName('input')
 
   for (const input of inputs) {
-    input.value = ''
+    if (getDisabledPlayers().includes(input.name)) {
+      input.value = '0'
+    } else {
+      input.value = ''
+    }
   }
 }
 
@@ -183,7 +231,9 @@ function resetScores () {
   const playerNames = getPlayerNames()
   const initialScores = new Array(playerNames.length).fill(0)
   saveScores([initialScores])
+  setDisabledPlayers([])
 
+  initialiseForm()
   renderTables()
 }
 
