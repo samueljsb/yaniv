@@ -46,33 +46,28 @@ function startNewGame () {
 // Score board
 
 function renderScoreBoard (playerNames, allScores) {
-  const table = document.createElement('table')
-  table.setAttribute('class', 'table')
-  table.setAttribute('id', 'scoreBoard')
+  const scoreBoardTemplate = document.querySelector('#scoreBoardTemplate')
 
-  const thead = document.createElement('thead')
-  const headerRow = document.createElement('tr')
+  const scoreBoard = scoreBoardTemplate.content.firstElementChild.cloneNode(true)
+
+  const headerRow = scoreBoard.querySelector('thead>tr')
   for (const name of playerNames) {
     const th = document.createElement('th')
     th.attributes.scope = 'col'
     th.textContent = name
     headerRow.appendChild(th)
   }
-  thead.appendChild(headerRow)
-  table.appendChild(thead)
 
   const currentScores = allScores[allScores.length - 1]
-  const tbody = document.createElement('tbody')
   const tr = document.createElement('tr')
   for (const score of currentScores) {
     const td = document.createElement('td')
     td.textContent = score
     tr.appendChild(td)
   }
-  tbody.appendChild(tr)
-  table.appendChild(tbody)
+  scoreBoard.querySelector('tbody').appendChild(tr)
 
-  return table
+  return scoreBoard
 }
 
 // Score input
@@ -80,22 +75,14 @@ function renderScoreBoard (playerNames, allScores) {
 function getForm () { return document.getElementById('playerInputs') }
 
 function buildPlayerInput (name) {
-  const inputElement = document.createElement('input')
-  inputElement.type = 'number'
-  inputElement.inputMode = 'numeric'
-  inputElement.className = 'form-control'
-  inputElement.name = name
+  const playerInputTemplate = document.querySelector('#playerInputTemplate')
 
-  const label = document.createElement('label')
-  label.htmlFor = name
-  label.textContent = name
+  const playerInput = playerInputTemplate.content.firstElementChild.cloneNode(true)
+  playerInput.querySelector('input').name = name
+  playerInput.querySelector('label').htmlFor = name
+  playerInput.querySelector('label').textContent = name
 
-  const div = document.createElement('div')
-  div.className = 'form-floating mb-3'
-  div.appendChild(inputElement)
-  div.appendChild(label)
-
-  return div
+  return playerInput
 }
 
 function initialiseForm () {
@@ -137,22 +124,18 @@ function clearForm (form) {
 // Score table
 
 function renderGameHistory (playerNames, allScores) {
-  const table = document.createElement('table')
-  table.setAttribute('class', 'table')
-  table.setAttribute('id', 'scoreTable')
+  const gameHistoryTemplate = document.querySelector('#gameHistoryTemplate')
+  const gameHistory = gameHistoryTemplate.content.firstElementChild.cloneNode(true)
 
-  const thead = document.createElement('thead')
-  const headerRow = document.createElement('tr')
+  const headerRow = gameHistory.querySelector('thead>tr')
   for (const name of playerNames) {
     const th = document.createElement('th')
     th.attributes.scope = 'col'
     th.textContent = name
     headerRow.appendChild(th)
   }
-  thead.appendChild(headerRow)
-  table.appendChild(thead)
 
-  const tbody = document.createElement('tbody')
+  const tbody = gameHistory.querySelector('tbody')
   for (const scores of allScores) {
     const tr = document.createElement('tr')
     for (const score of scores) {
@@ -162,9 +145,8 @@ function renderGameHistory (playerNames, allScores) {
     }
     tbody.appendChild(tr)
   }
-  table.appendChild(tbody)
 
-  return table
+  return gameHistory
 }
 
 // Game
@@ -221,9 +203,9 @@ function renderTables () {
   const newScoreBoard = renderScoreBoard(playerNames, allScores)
   scoreBoardContainer.replaceChildren(newScoreBoard)
 
-  const gameHistoryContainer = document.getElementById('gameHistory')
+  const gameHistory = document.getElementById('gameHistory')
   const newGameHistory = renderGameHistory(playerNames, allScores)
-  gameHistoryContainer.replaceChildren(newGameHistory)
+  gameHistory.replaceWith(newGameHistory)
 }
 
 function main () {
