@@ -51,8 +51,15 @@
       <div class="card my-3">
         <div class="card-body">
           <div class="row mb-3">
-            <button id="newGameButton" class="btn btn-outline-primary mx-1" style="float: right;"> New game</button>
-            <input id="resetScores" type="reset" class="btn btn-outline-danger mx-1" value="Restart" style="float: right;">
+            <div class="btn-toolbar" role="toolbar" style="justify-content: end;">
+              <input id="resetScores"
+                type="reset" value="Restart"
+                class="btn btn-outline-danger mx-1"
+              >
+              <button id="newGameButton"
+                class="btn btn-outline-primary mx-1"
+              >New game</button>
+            </div>
           </div>
           <div class="row">
             <div class="col-sm">
