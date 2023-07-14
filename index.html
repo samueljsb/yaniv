@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Yaniv</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous" />
+    <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+      integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+      crossorigin="anonymous"
+    >
   </head>
   <body>
     <dialog id="newGameDialog">
@@ -14,8 +18,8 @@
         <form method="dialog" style="margin-left: auto">
           <button
             class="btn-close" aria-label="Close"
-            style="margin-bottom: 0.5rem;">
-          </button>
+            style="margin-bottom: 0.5rem;"
+          ></button>
         </form>
       </div>
       <p>
@@ -23,17 +27,16 @@
       </p>
       <form method="dialog">
         <div class="form-floating mb-3">
-        <textarea
-          id="playerNames" autofocus
-          class="form-control" style="height: 8rem"></textarea>
-        <label for="playerNames">Player names</label>
+          <textarea id="playerNames"
+            autofocus
+            class="form-control" style="height: 8rem"
+          ></textarea>
+          <label for="playerNames">Player names</label>
         </div>
-        <button
-          id="startNewGameButton" formmethod="dialog"
+        <button id="startNewGameButton"
+          formmethod="dialog"
           class="btn btn-primary" style="float: right;"
-        >
-          Start
-        </button>
+        >Start</button>
       </form>
     </dialog>
 
@@ -68,7 +71,10 @@
             <div class="col-sm">
               <form onsubmit="return false;">
                 <div id="playerInputs"></div>
-                <button id="submitScores" type="submit" class="btn btn-primary">Submit</button>
+                <button id="submitScores"
+                  type="submit"
+                  class="btn btn-primary"
+                >Submit</button>
               </form>
             </div>
           </div>
@@ -79,7 +85,10 @@
         <div class="card-body">
           <h5 class="card-title">All rounds</h5>
           <div>
-            <input id="undoLastRound" type="button" class="btn btn-outline-warning mx-1" value="Undo" style="float: right;">
+            <input id="undoLastRound"
+              type="button" value="Undo"
+              class="btn btn-outline-warning mx-1" style="float: right;"
+            >
           </div>
           <div id="gameHistory"></div>
         </div>
@@ -110,9 +119,9 @@
         </div>
         <div class="col-auto">
           <button
-            class="btn-close" aria-label="Close"
-            style="margin-bottom: 1rem;">
-          </button>
+            aria-label="Close"
+            class="btn-close" style="margin-bottom: 1rem;"
+          ></button>
         </div>
       </div>
     </template>
