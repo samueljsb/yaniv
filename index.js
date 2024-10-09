@@ -195,17 +195,27 @@ function renderGameHistory (playerNames, allScores) {
 
 // Game
 
+function updateScore (totalSoFar, newPoints) {
+  if (newPoints === 0) {
+    return totalSoFar
+  }
+
+  let newTotal = totalSoFar + newPoints
+
+  if (newTotal % 50 === 0) {
+    newTotal = newTotal / 2
+  }
+
+  return newTotal
+}
+
 function calculateScore (scores, totals) {
   const newTotals = []
 
   for (let i = 0; i < scores.length; i++) {
-    let newTotal = totals[i] + scores[i]
-
-    if (newTotal % 50 === 0) {
-      newTotal = newTotal / 2
-    }
-
-    newTotals.push(newTotal)
+    newTotals.push(
+      updateScore(totals[i], scores[i])
+    )
   }
 
   return newTotals
